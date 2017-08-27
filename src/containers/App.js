@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Route, Switch, Link } from 'react-router-dom';
 import FontIcon from 'react-toolbox/lib/font_icon';
 import { Navigation } from 'react-toolbox/lib/navigation';
+import { Dialog } from 'react-toolbox/lib/dialog';
 import { Notifs } from 'redux-notifications';
 import TopBarProgress from 'react-topbar-progress-indicator';
 import Sidebar from './Sidebar';
@@ -49,6 +50,7 @@ class App extends React.Component {
     toggleSidebar: PropTypes.func.isRequired,
     navigateToCollection: PropTypes.func.isRequired,
     user: ImmutablePropTypes.map,
+    authPopup: PropTypes.bool.isRequired,
     runCommand: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
     publishMode: PropTypes.oneOf([SIMPLE, EDITORIAL_WORKFLOW]),
@@ -114,6 +116,7 @@ class App extends React.Component {
       logoutUser,
       isFetching,
       publishMode,
+      authPopup,
     } = this.props;
 
 
@@ -129,7 +132,7 @@ class App extends React.Component {
       return <Loader active>Loading configuration...</Loader>;
     }
 
-    if (user == null) {
+    if (user == null && !authPopup) {
       return this.authenticating();
     }
 
@@ -183,6 +186,9 @@ class App extends React.Component {
       <Sidebar content={sidebarContent}>
         <div>
           <Notifs CustomComponent={Toast} />
+          <Dialog active={authPopup}>
+            <div>{this.authenticating()}</div>
+          </Dialog>
           <AppHeader
             user={user}
             collections={collections}
@@ -213,9 +219,10 @@ class App extends React.Component {
 function mapStateToProps(state) {
   const { auth, config, collections, globalUI } = state;
   const user = auth && auth.get('user');
+  const authPopup = (auth && auth.get('popup')) || false;
   const isFetching = globalUI.get('isFetching');
   const publishMode = config && config.get('publish_mode');
-  return { auth, config, collections, user, isFetching, publishMode };
+  return { auth, config, collections, user, isFetching, publishMode, authPopup };
 }
 
 function mapDispatchToProps(dispatch) {
