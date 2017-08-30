@@ -6,7 +6,6 @@ import { currentBackend } from '../backends/backend';
 import { getAsset } from '../reducers';
 import { loadEntry } from './entries';
 import { status, EDITORIAL_WORKFLOW } from '../constants/publishModes';
-import { EditorialWorkflowError } from "../valueObjects/errors";
 
 const { notifSend } = notifActions;
 
@@ -211,16 +210,11 @@ export function loadUnpublishedEntries() {
     const state = getState();
     if (state.config.get('publish_mode') !== EDITORIAL_WORKFLOW) return;
     const backend = currentBackend(state.config);
-    if (backend.supportsWorkflow()) {
-      dispatch(unpublishedEntriesLoading());
-      backend.unpublishedEntries().then(
-        response => dispatch(unpublishedEntriesLoaded(response.entries, response.pagination)),
-        error => dispatch(unpublishedEntriesFailed(error))
-      );
-    }
-    else {
-      throw new EditorialWorkflowError('Backend does not support editorial workflow', true);
-    }
+    dispatch(unpublishedEntriesLoading());
+    backend.unpublishedEntries().then(
+      response => dispatch(unpublishedEntriesLoaded(response.entries, response.pagination)),
+      error => dispatch(unpublishedEntriesFailed(error))
+    );
   };
 }
 
