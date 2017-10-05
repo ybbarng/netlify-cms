@@ -2,6 +2,7 @@ import toml from 'toml-j0.4';
 import tomlify from 'tomlify-j0.4';
 import moment from 'moment';
 import AssetProxy from '../valueObjects/AssetProxy';
+import sortKeys from './helpers';
 
 const outputReplacer = (key, value) => {
   if (moment.isMoment(value)) {
@@ -12,20 +13,6 @@ const outputReplacer = (key, value) => {
   }
   // Return `false` to use default (`undefined` would delete key).
   return false;
-};
-
-const sortKeys = (sortedKeys = []) => (a, b) => {
-  const idxA = sortedKeys.indexOf(a);
-  const idxB = sortedKeys.indexOf(b);
-  if (idxA === -1 || idxB === -1) {
-    if (a > b) return 1;
-    if (a < b) return -1;
-    return 0;
-  }
-
-  if (idxA > idxB) return 1;
-  if (idxA < idxB) return -1;
-  return 0;
 };
 
 export default class TOML {
