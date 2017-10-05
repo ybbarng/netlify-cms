@@ -1,19 +1,34 @@
 import matter from 'gray-matter';
-import tomlEng from 'toml-j0.4';
-import YAML from './yaml';
+import TOMLparser from './toml';
+import YAMLparser from './yaml';
+import JSONparser from './json';
 
-const parsers = {
-  toml: tomlEng.parse.bind(tomlEng),
-  json: (input) => {
-    let JSONinput = input.trim();
-    // Fix JSON if leading and trailing brackets were trimmed.
-    if (JSONinput.substr(0, 1) !== '{') {
-      JSONinput = '{' + JSONinput;
-    }
-    if (JSONinput.substr(-1) !== '}') {
-      JSONinput = JSONinput + '}';
-    }
-    return matter.engines.json.parse(JSONinput);
+const YAMLFormatter = new YAMLparser();
+const TOMLFormatter = new TOMLparser();
+const JSONFormatter = new JSONparser();
+
+const engines = {
+  yaml: {
+    parse: YAMLFormatter.fromFile.bind(YAMLFormatter),
+    stringify: (data, options) => YAMLFormatter.toFile(data, options.sortedKeys),
+  },
+  toml: {
+    parse: TOMLFormatter.fromFile.bind(TOMLFormatter),
+    stringify: (data, options) => TOMLFormatter.toFile(data, options.sortedKeys),
+  },
+  json: {
+    parse(input) {
+      let JSONinput = input.trim();
+      // Fix JSON if leading and trailing brackets were trimmed.
+      if (JSONinput.substr(0, 1) !== '{') {
+        JSONinput = '{' + JSONinput;
+      }
+      if (JSONinput.substr(-1) !== '}') {
+        JSONinput = JSONinput + '}';
+      }
+      return JSONFormatter.fromFile(JSONinput);
+    },
+    stringify: (data, options) => JSONFormatter.toFile(data, options.sortedKeys),
   },
 }
 
@@ -37,7 +52,7 @@ function inferFrontmatterFormat(str) {
 
 export default class Frontmatter {
   fromFile(content) {
-    const result = matter(content, { engines: parsers, ...inferFrontmatterFormat(content) });
+    const result = matter(content, { engines, ...inferFrontmatterFormat(content) });
     const data = result.data;
     data.body = result.content;
     return data;
@@ -54,12 +69,6 @@ export default class Frontmatter {
       }
     });
 
-    // always stringify to YAML
-    const parser = {
-      stringify(metadata) {
-        return new YAML().toFile(metadata, sortedKeys);
-      },
-    };
-    return matter.stringify(body, meta, { language: "yaml", delimiters: "---", engines: { yaml: parser } });
+    return matter.stringify(body, meta, { language: "yaml", delimiters: "---", engines, sortedKeys });
   }
 }
