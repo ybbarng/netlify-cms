@@ -112,6 +112,7 @@
     "immutable": "^3.7.6",
     "js-base64": "^2.1.9",
     "js-yaml": "^3.10.0",
+    "json-stable-stringify": "^1.0.1",
     "jwt-decode": "^2.1.0",
     "localforage": "^1.4.2",
     "lodash": "^4.13.1",
