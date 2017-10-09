@@ -115,7 +115,7 @@
     "gray-matter": "^3.0.6",
     "history": "^2.1.2",
     "immutable": "^3.7.6",
-    "js-base64": "^2.1.9",
+    "js-base64": "^2.3.2",
     "js-yaml": "^3.10.0",
     "jwt-decode": "^2.1.0",
     "localforage": "^1.5.1",
