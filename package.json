@@ -94,7 +94,6 @@
     "postcss-cssnext": "^2.7.0",
     "postcss-import": "^10.0.0",
     "postcss-loader": "^2.0.5",
-    "react-addons-test-utils": "^15.4.2",
     "style-loader": "^0.18.2",
     "stylefmt": "^4.3.1",
     "stylelint": "^7.9.0",
