@@ -7351,9 +7351,9 @@ redux-optimist@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/redux-optimist/-/redux-optimist-0.0.2.tgz#70da17e863c53a8604d581ca20a26908bda1697e"
 
-redux-thunk@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-1.0.3.tgz#778aa0099eea0595031ab6b39165f6670d8d26bd"
+redux-thunk@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.2.0.tgz#e615a16e16b47a19a515766133d1e3e99b7852e5"
 
 redux@^3.3.1, redux@^3.5.2, redux@^3.6.0, redux@^3.7.1:
   version "3.7.2"
