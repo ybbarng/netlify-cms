@@ -15,12 +15,15 @@ export default class SelectControl extends React.Component {
       return <div>Error rendering select control for {field.get('name')}: No options</div>;
     }
 
-    const options = fieldOptions.map((option) => {
-      if (typeof option === 'string') {
-        return { label: option, value: option };
-      }
-      return option;
-    });
+    const options = [
+      ...(field.get('default', false) ? [] : [{ label: '<not set>', value: '' }]),
+      ...fieldOptions.map((option) => {
+        if (typeof option === 'string') {
+          return { label: option, value: option };
+        }
+        return option;
+      }),
+    ];
 
     return (<select id={forID} value={value || ''} onChange={this.handleChange}>
       {options.map((option, idx) => <option key={idx} value={option.value}>
