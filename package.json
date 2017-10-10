@@ -118,7 +118,7 @@
     "js-base64": "^2.1.9",
     "js-yaml": "^3.10.0",
     "jwt-decode": "^2.1.0",
-    "localforage": "^1.4.2",
+    "localforage": "^1.5.1",
     "lodash": "^4.13.1",
     "material-design-icons": "^3.0.1",
     "mdast-util-definitions": "^1.2.2",
