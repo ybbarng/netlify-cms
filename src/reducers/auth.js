@@ -6,13 +6,13 @@ const auth = (state = Immutable.Map(), action) => {
     case AUTH_REQUEST:
       return state.set('isFetching', true);
     case AUTH_SUCCESS:
-      return Immutable.fromJS({ user: action.payload, popup: false });
+      return Immutable.fromJS({ user: action.payload });
     case AUTH_FAILURE:
-      return Immutable.Map({ error: action.payload.toString(), popup: false });
+      return Immutable.Map({ error: action.payload.toString() });
     case SHOW_AUTH_POPUP:
       return state.set('popup', true);
     case LOGOUT:
-      return state.remove('user');
+      return state.remove('user').remove('isFetching');
     default:
       return state;
   }

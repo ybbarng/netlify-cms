@@ -84,19 +84,13 @@ class App extends React.Component {
       return <div><h1>Waiting for backend...</h1></div>;
     }
 
-    return (
-      <div>
-        {
-          React.createElement(backend.authComponent(), {
-            onLogin: this.handleLogin.bind(this),
-            error: auth && auth.get('error'),
-            isFetching: auth && auth.get('isFetching'),
-            siteId: this.props.config.getIn(["backend", "site_domain"]),
-            base_url: this.props.config.getIn(["backend", "base_url"], null)
-          })
-        }
-      </div>
-    );
+    return React.createElement(backend.authComponent(), {
+      onLogin: this.handleLogin.bind(this),
+      error: auth && auth.get('error'),
+      isFetching: auth && auth.get('isFetching'),
+      siteId: this.props.config.getIn(["backend", "site_domain"]),
+      base_url: this.props.config.getIn(["backend", "base_url"], null)
+    });
   }
 
   handleLinkClick(event, handler, ...args) {
@@ -133,7 +127,11 @@ class App extends React.Component {
     }
 
     if (user == null && !authPopup) {
-      return this.authenticating();
+      return (
+        <div className="nc-auth-page">
+          {this.authenticating()}
+        </div>
+      );
     }
 
     const sidebarContent = (
@@ -186,7 +184,14 @@ class App extends React.Component {
       <Sidebar content={sidebarContent}>
         <div>
           <Notifs CustomComponent={Toast} />
-          <Dialog active={authPopup}>
+          <Dialog
+            active={authPopup}
+            theme={({
+            wrapper: 'nc-dialog-wrapper',
+            dialog: 'nc-dialog-root',
+            body: 'nc-dialog-body',
+            })}
+          >
             <div>{this.authenticating()}</div>
           </Dialog>
           <AppHeader
