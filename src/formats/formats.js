@@ -8,6 +8,13 @@ const tomlFormatter = new TOML();
 const jsonFormatter = new JSONFormatter();
 const FrontmatterFormatter = new Frontmatter();
 
+export const formatToExtension = format => ({
+  markdown: 'md',
+  yaml: 'yml',
+  json: 'json',
+  html: 'html',
+}[format]);
+
 function formatByType(type) {
   // Right now the only type is "editorialWorkflow" and
   // we always returns the same format

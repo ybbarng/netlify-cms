@@ -1,6 +1,7 @@
 import { OrderedMap, fromJS } from 'immutable';
 import { has } from 'lodash';
 import consoleError from '../lib/consoleError';
+import { formatToExtension } from '../formats/formats';
 import { CONFIG_SUCCESS } from '../actions/config';
 import { FILES, FOLDER } from '../constants/collectionTypes';
 import { INFERABLE_FIELDS } from '../constants/fieldInference';
@@ -25,13 +26,6 @@ const collections = (state = null, action) => {
       return state;
   }
 };
-
-const formatToExtension = format => ({
-  markdown: 'md',
-  yaml: 'yml',
-  json: 'json',
-  html: 'html',
-}[format]);
 
 const selectors = {
   [FOLDER]: {
