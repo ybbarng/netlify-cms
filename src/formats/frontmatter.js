@@ -1,11 +1,9 @@
 import matter from 'gray-matter';
-import TOML from './toml';
-import YAML from './yaml';
-
-const tomlFormatter = new TOML();
+import * as TOML from './toml';
+import * as YAML from './yaml';
 
 const parsers = {
-  toml: tomlFormatter.fromFile.bind(tomlFormatter),
+  toml: input => TOML.fromFile(null, input),
   json: (input) => {
     let JSONinput = input.trim();
     // Fix JSON if leading and trailing brackets were trimmed.
@@ -58,7 +56,7 @@ export function toFile(data, sortedKeys) {
   // always stringify to YAML
   const parser = {
     stringify(metadata) {
-      return new YAML().toFile(metadata, sortedKeys);
+      return YAML.toFile(metadata, sortedKeys);
     },
   };
   return matter.stringify(body, meta, { language: "yaml", delimiters: "---", engines: { yaml: parser } });

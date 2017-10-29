@@ -10,36 +10,26 @@ export const formatToExtension = format => ({
   html: 'html',
 }[format]);
 
-function formatByType(type) {
-  // Right now the only type is "editorialWorkflow" and
-  // we always returns the same format
-  return Frontmatter;
-}
+export const formatByExtension = extension => ({
+  yml: YAML,
+  yaml: YAML,
+  toml: TOML,
+  json: JSONFormatter,
+  md: Frontmatter,
+  markdown: Frontmatter,
+  html: Frontmatter,
+}[extension] || Frontmatter);
 
-export function formatByExtension(extension) {
-  return {
-    yml: YAML,
-    yaml: YAML,
-    toml: TOML,
-    json: JSONFormatter,
-    md: Frontmatter,
-    markdown: Frontmatter,
-    html: Frontmatter,
-  }[extension] || Frontmatter;
-}
-
-function formatByName(name) {
-  return {
-    yml: YAML,
-    yaml: YAML,
-    toml: TOML,
-    frontmatter: Frontmatter,
-  }[name] || Frontmatter;
-}
+const formatByName = name => ({
+  yml: YAML,
+  yaml: YAML,
+  toml: TOML,
+  frontmatter: Frontmatter,
+}[name] || Frontmatter);
 
 export function resolveFormat(collectionOrEntity, entry) {
-  if (typeof collectionOrEntity === 'string') {
-    return formatByType(collectionOrEntity);
+  if (collectionOrEntity === "editorialWorkflow") {
+    return Frontmatter;
   }
   const path = entry && entry.path;
   if (path) {
