@@ -1,6 +1,7 @@
 import matter from 'gray-matter';
 import TOML from './toml';
 import YAML from './yaml';
+import JSONFormatter from './json';
 
 const parsers = {
   toml: input => TOML.fromFile(null, input),
@@ -13,8 +14,9 @@ const parsers = {
     if (JSONinput.substr(-1) !== '}') {
       JSONinput = JSONinput + '}';
     }
-    return matter.engines.json.parse(JSONinput);
+    return JSONFormatter.fromFile(null, JSONinput);
   },
+  yaml: input => YAML.fromFile(null, input),
 }
 
 function inferFrontmatterFormat(str) {
