@@ -5,7 +5,7 @@ import YAML from './yaml';
 const tomlFormatter = new TOML();
 
 const parsers = {
-  toml: tomlFormatter.fromFile.bind(tomlFormatter),
+  toml: input => tomlFormatter.fromFile(null, input),
   json: (input) => {
     let JSONinput = input.trim();
     // Fix JSON if leading and trailing brackets were trimmed.
@@ -38,7 +38,7 @@ function inferFrontmatterFormat(str) {
 }
 
 export default class Frontmatter {
-  fromFile(content) {
+  fromFile(collectionOrEntity, content) {
     const result = matter(content, { engines: parsers, ...inferFrontmatterFormat(content) });
     return {
       ...result.data,
@@ -46,13 +46,13 @@ export default class Frontmatter {
     };
   }
 
-  toFile(data, sortedKeys) {
+  toFile(collectionOrEntity, data, sortedKeys) {
     const { body, ...meta } = data;
 
     // always stringify to YAML
     const parser = {
       stringify(metadata) {
-        return new YAML().toFile(metadata, sortedKeys);
+        return new YAML().toFile(collectionOrEntity, metadata, sortedKeys);
       },
     };
     return matter.stringify(body, meta, { language: "yaml", delimiters: "---", engines: { yaml: parser } });

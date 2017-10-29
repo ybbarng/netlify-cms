@@ -16,11 +16,11 @@ const outputReplacer = (key, value) => {
 };
 
 export default class TOML {
-  fromFile(content) {
+  fromFile(collectionOrEntity, content) {
     return toml.parse(content);
   }
 
-  toFile(data, sortedKeys = []) {
+  toFile(collectionOrEntity, data, sortedKeys = []) {
     return tomlify.toToml(data, { replace: outputReplacer, sort: sortKeys(sortedKeys) });
   }
 }

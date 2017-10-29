@@ -37,11 +37,11 @@ const OutputSchema = new yaml.Schema({
 });
 
 export default class YAML {
-  fromFile(content) {
+  fromFile(collectionOrEntity, content) {
     return yaml.safeLoad(content);
   }
 
-  toFile(data, sortedKeys = []) {
+  toFile(collectionOrEntity, data, sortedKeys = []) {
     return yaml.safeDump(data, { schema: OutputSchema, sortKeys: sortKeys(sortedKeys) });
   }
 }

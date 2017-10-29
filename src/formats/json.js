@@ -1,9 +1,9 @@
 export default class JSONFormatter {
-  fromFile(content) {
+  fromFile(collectionOrEntity, content) {
     return JSON.parse(content);
   }
 
-  toFile(data) {
+  toFile(collectionOrEntity, data) {
     return JSON.stringify(data);
   }
 }
