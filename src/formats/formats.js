@@ -1,7 +1,8 @@
-import YAML from './yaml';
-import TOML from './toml';
-import JSONFormatter from './json';
-import Frontmatter from './frontmatter';
+import { partial } from 'lodash';
+import * as YAML from './yaml';
+import * as TOML from './toml';
+import * as JSONFormatter from './json';
+import * as Frontmatter from './frontmatter';
 
 export const formatToExtension = format => ({
   markdown: 'md',
@@ -28,12 +29,18 @@ const formatByName = name => ({
 }[name] || Frontmatter);
 
 export function resolveFormat(collectionOrEntity, entry) {
+  let formatter;
   if (collectionOrEntity === "editorialWorkflow") {
-    return Frontmatter;
+    formatter = Frontmatter;
   }
   const path = entry && entry.path;
   if (path) {
-    return formatByExtension(path.split('.').pop());
+    formatter = formatByExtension(path.split('.').pop());
   }
-  return formatByName(collectionOrEntity.get('format'));
+  formatter = formatByName(collectionOrEntity.get('format'));
+  
+  return {
+    fromFile: partial(formatter.fromFile, collectionOrEntity),
+    toFile: partial(formatter.toFile, collectionOrEntity),
+  };
 }

@@ -15,10 +15,10 @@ const outputReplacer = (key, value) => {
   return false;
 };
 
-export function fromFile(content) {
+export function fromFile(collectionOrEntity, content) {
   return toml.parse(content);
 }
 
-export function toFile(data, sortedKeys = []) {
+export function toFile(collectionOrEntity, data, sortedKeys = []) {
   return tomlify.toToml(data, { replace: outputReplacer, sort: sortKeys(sortedKeys) });
 }

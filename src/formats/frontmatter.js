@@ -35,14 +35,14 @@ function inferFrontmatterFormat(str) {
   }
 }
 
-export function fromFile(content) {
+export function fromFile(collectionOrEntity, content) {
   const result = matter(content, { engines: parsers, ...inferFrontmatterFormat(content) });
   const data = result.data;
   data.body = result.content;
   return data;
 }
 
-export function toFile(data, sortedKeys) {
+export function toFile(collectionOrEntity, data, sortedKeys) {
   const meta = {};
   let body = '';
   Object.keys(data).forEach((key) => {
