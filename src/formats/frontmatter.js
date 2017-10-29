@@ -1,6 +1,6 @@
 import matter from 'gray-matter';
-import * as TOML from './toml';
-import * as YAML from './yaml';
+import TOML from './toml';
+import YAML from './yaml';
 
 const parsers = {
   toml: input => TOML.fromFile(null, input),
@@ -35,29 +35,31 @@ function inferFrontmatterFormat(str) {
   }
 }
 
-export function fromFile(collectionOrEntity, content) {
-  const result = matter(content, { engines: parsers, ...inferFrontmatterFormat(content) });
-  const data = result.data;
-  data.body = result.content;
-  return data;
-}
+export default {
+  fromFile(collectionOrEntity, content) {
+    const result = matter(content, { engines: parsers, ...inferFrontmatterFormat(content) });
+    const data = result.data;
+    data.body = result.content;
+    return data;
+  },
 
-export function toFile(collectionOrEntity, data, sortedKeys) {
-  const meta = {};
-  let body = '';
-  Object.keys(data).forEach((key) => {
-    if (key === 'body') {
-      body = data[key];
-    } else {
-      meta[key] = data[key];
-    }
-  });
+  toFile(collectionOrEntity, data, sortedKeys) {
+    const meta = {};
+    let body = '';
+    Object.keys(data).forEach((key) => {
+      if (key === 'body') {
+        body = data[key];
+      } else {
+        meta[key] = data[key];
+      }
+    });
 
-  // always stringify to YAML
-  const parser = {
-    stringify(metadata) {
-      return YAML.toFile(metadata, sortedKeys);
-    },
-  };
-  return matter.stringify(body, meta, { language: "yaml", delimiters: "---", engines: { yaml: parser } });
-}
+    // always stringify to YAML
+    const parser = {
+      stringify(metadata) {
+        return YAML.toFile(metadata, sortedKeys);
+      },
+    };
+    return matter.stringify(body, meta, { language: "yaml", delimiters: "---", engines: { yaml: parser } });
+  },
+};

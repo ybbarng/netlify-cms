@@ -36,10 +36,12 @@ const OutputSchema = new yaml.Schema({
   explicit: yaml.DEFAULT_SAFE_SCHEMA.explicit,
 });
 
-export function fromFile(collectionOrEntity, content) {
-  return yaml.safeLoad(content);
-}
+export default {
+  fromFile(collectionOrEntity, content) {
+    return yaml.safeLoad(content);
+  },
 
-export function toFile(collectionOrEntity, data, sortedKeys = []) {
-  return yaml.safeDump(data, { schema: OutputSchema, sortKeys: sortKeys(sortedKeys) });
-}
+  toFile(collectionOrEntity, data, sortedKeys = []) {
+    return yaml.safeDump(data, { schema: OutputSchema, sortKeys: sortKeys(sortedKeys) });
+  },
+};

@@ -1,8 +1,8 @@
 import { partial } from 'lodash';
-import * as YAML from './yaml';
-import * as TOML from './toml';
-import * as JSONFormatter from './json';
-import * as Frontmatter from './frontmatter';
+import YAML from './yaml';
+import TOML from './toml';
+import JSONFormatter from './json';
+import Frontmatter from './frontmatter';
 
 export const formatToExtension = format => ({
   markdown: 'md',
