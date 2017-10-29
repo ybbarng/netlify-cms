@@ -44,22 +44,14 @@ function matterSettings(collectionOrEntity) {
 export default {
   fromFile(collectionOrEntity, content) {
     const result = matter(content, matterSettings(collectionOrEntity));
-    const data = result.data;
-    data.body = result.content;
-    return data;
+    return {
+      ...result.data,
+      body: result.content,
+    };
   },
 
   toFile(collectionOrEntity, data, sortedKeys) {
-    const meta = {};
-    let body = '';
-    Object.keys(data).forEach((key) => {
-      if (key === 'body') {
-        body = data[key];
-      } else {
-        meta[key] = data[key];
-      }
-    });
-
+    const { body, ...meta } = data;
     return matter.stringify(body, meta, matterSettings(collectionOrEntity));
   },
 };
