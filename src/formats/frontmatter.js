@@ -3,8 +3,6 @@ import TOML from './toml';
 import YAML from './yaml';
 import JSONFormatter from './json';
 
-const defaultFrontmatterFormat = "yaml";
-
 const parsers = {
   toml: {
     parse: input => TOML.fromFile(null, input),
@@ -36,14 +34,27 @@ const getDelims = format => ({
   json: ['{', '}'],
 }[format] || '---');
 
-function matterSettings(collectionOrEntity) {
-  const matterFormat = collectionOrEntity.get('front_matter_format', defaultFrontmatterFormat);
-  return { engines: parsers, language: matterFormat, delims: getDelims(matterFormat) };
+function inferFrontmatterFormat(str) {
+  const firstLine = str.substr(0, str.indexOf('\n')).trim();
+  if ((firstLine.length > 3) && (firstLine.substr(0, 3) === "---")) {
+    // No need to infer, `gray-matter` will handle things like `---toml` for us.
+    return;
+  }
+  switch (firstLine) {
+    case "---":
+      return { language: "yaml", delimiters: "---" };
+    case "+++":
+      return { language: "toml", delimiters: "+++" };
+    case "{":
+      return { language: "json", delimiters: ["{", "}"] };
+    default:
+      throw "Unrecognized front-matter format.";
+  }
 }
 
 export default {
   fromFile(collectionOrEntity, content) {
-    const result = matter(content, matterSettings(collectionOrEntity));
+    const result = matter(content, { engines: parsers, ...inferFrontmatterFormat(content) });
     return {
       ...result.data,
       body: result.content,
@@ -52,6 +63,7 @@ export default {
 
   toFile(collectionOrEntity, data, sortedKeys) {
     const { body, ...meta } = data;
-    return matter.stringify(body, meta, matterSettings(collectionOrEntity));
+    const matterFormat = collectionOrEntity.get('front_matter_format', "yaml");
+    return matter.stringify(body, meta, { engines: parsers, language: matterFormat, delimiters: getDelims(matterFormat) });
   },
 };
