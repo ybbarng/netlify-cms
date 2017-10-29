@@ -1,9 +1,7 @@
-export default class JSONFormatter {
-  fromFile(content) {
-    return JSON.parse(content);
-  }
+export function fromFile(content) {
+  return JSON.parse(content);
+}
 
-  toFile(data) {
-    return JSON.stringify(data);
-  }
+export function toFile(data) {
+  return JSON.stringify(data);
 }

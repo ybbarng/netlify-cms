@@ -37,31 +37,29 @@ function inferFrontmatterFormat(str) {
   }
 }
 
-export default class Frontmatter {
-  fromFile(content) {
-    const result = matter(content, { engines: parsers, ...inferFrontmatterFormat(content) });
-    const data = result.data;
-    data.body = result.content;
-    return data;
-  }
+export function fromFile(content) {
+  const result = matter(content, { engines: parsers, ...inferFrontmatterFormat(content) });
+  const data = result.data;
+  data.body = result.content;
+  return data;
+}
 
-  toFile(data, sortedKeys) {
-    const meta = {};
-    let body = '';
-    Object.keys(data).forEach((key) => {
-      if (key === 'body') {
-        body = data[key];
-      } else {
-        meta[key] = data[key];
-      }
-    });
+export function toFile(data, sortedKeys) {
+  const meta = {};
+  let body = '';
+  Object.keys(data).forEach((key) => {
+    if (key === 'body') {
+      body = data[key];
+    } else {
+      meta[key] = data[key];
+    }
+  });
 
-    // always stringify to YAML
-    const parser = {
-      stringify(metadata) {
-        return new YAML().toFile(metadata, sortedKeys);
-      },
-    };
-    return matter.stringify(body, meta, { language: "yaml", delimiters: "---", engines: { yaml: parser } });
-  }
+  // always stringify to YAML
+  const parser = {
+    stringify(metadata) {
+      return new YAML().toFile(metadata, sortedKeys);
+    },
+  };
+  return matter.stringify(body, meta, { language: "yaml", delimiters: "---", engines: { yaml: parser } });
 }

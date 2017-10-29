@@ -3,11 +3,6 @@ import TOML from './toml';
 import JSONFormatter from './json';
 import Frontmatter from './frontmatter';
 
-const yamlFormatter = new YAML();
-const tomlFormatter = new TOML();
-const jsonFormatter = new JSONFormatter();
-const FrontmatterFormatter = new Frontmatter();
-
 export const formatToExtension = format => ({
   markdown: 'md',
   yaml: 'yml',
@@ -18,28 +13,28 @@ export const formatToExtension = format => ({
 function formatByType(type) {
   // Right now the only type is "editorialWorkflow" and
   // we always returns the same format
-  return FrontmatterFormatter;
+  return Frontmatter;
 }
 
 export function formatByExtension(extension) {
   return {
-    yml: yamlFormatter,
-    yaml: yamlFormatter,
-    toml: tomlFormatter,
-    json: jsonFormatter,
-    md: FrontmatterFormatter,
-    markdown: FrontmatterFormatter,
-    html: FrontmatterFormatter,
-  }[extension] || FrontmatterFormatter;
+    yml: YAML,
+    yaml: YAML,
+    toml: TOML,
+    json: JSONFormatter,
+    md: Frontmatter,
+    markdown: Frontmatter,
+    html: Frontmatter,
+  }[extension] || Frontmatter;
 }
 
 function formatByName(name) {
   return {
-    yml: yamlFormatter,
-    yaml: yamlFormatter,
-    toml: tomlFormatter,
-    frontmatter: FrontmatterFormatter,
-  }[name] || FrontmatterFormatter;
+    yml: YAML,
+    yaml: YAML,
+    toml: TOML,
+    frontmatter: Frontmatter,
+  }[name] || Frontmatter;
 }
 
 export function resolveFormat(collectionOrEntity, entry) {
