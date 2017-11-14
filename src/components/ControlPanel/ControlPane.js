@@ -34,13 +34,13 @@ export default class ControlPane extends Component {
       onOpenMediaLibrary,
       onAddAsset,
       onRemoveAsset,
-      user,
+      autoFields,
     } = this.props;
     const widget = resolveWidget(field.get('widget'));
     const fieldName = field.get('name');
     let value = entry.getIn(['data', fieldName]);
-    if (fieldName === 'authorId' && !value && user) {
-      value = user.get('login');
+    if (autoFields.has(fieldName) && !value) {
+      value = autoFields.get(fieldName);
     }
     const metadata = fieldsMetaData.get(fieldName);
     const errors = fieldsErrors.get(fieldName);
@@ -110,5 +110,5 @@ ControlPane.propTypes = {
   onChange: PropTypes.func.isRequired,
   onValidate: PropTypes.func.isRequired,
   onRemoveAsset: PropTypes.func.isRequired,
-  user: ImmutablePropTypes.map,
+  autoFields: ImmutablePropTypes.map,
 };
