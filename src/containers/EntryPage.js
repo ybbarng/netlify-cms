@@ -48,6 +48,7 @@ class EntryPage extends React.Component {
     fields: ImmutablePropTypes.list.isRequired,
     slug: PropTypes.string,
     newEntry: PropTypes.bool.isRequired,
+    user: ImmutablePropTypes.map,
   };
 
   componentDidMount() {
@@ -151,6 +152,7 @@ class EntryPage extends React.Component {
       addAsset,
       removeAsset,
       closeEntry,
+      user,
     } = this.props;
 
     if (entry && entry.get('error')) {
@@ -180,6 +182,7 @@ class EntryPage extends React.Component {
         showDelete={this.props.showDelete}
         enableSave={entryDraft.get('hasChanged')}
         onCancelEdit={this.handleCloseEntry}
+        user={user}
       />
     );
   }

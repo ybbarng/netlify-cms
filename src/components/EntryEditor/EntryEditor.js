@@ -63,6 +63,7 @@ class EntryEditor extends Component {
         onAddAsset,
         onRemoveAsset,
         onCancelEdit,
+        user,
     } = this.props;
 
     const { previewVisible, scrollSyncEnabled, showEventBlocker } = this.state;
@@ -112,6 +113,7 @@ class EntryEditor extends Component {
           onAddAsset={onAddAsset}
           onRemoveAsset={onRemoveAsset}
           ref={c => this.controlPaneRef = c} // eslint-disable-line
+          user={user}
         />
       </StickyContext>
     );
@@ -182,6 +184,7 @@ EntryEditor.propTypes = {
   onDelete: PropTypes.func.isRequired,
   onRemoveAsset: PropTypes.func.isRequired,
   onCancelEdit: PropTypes.func.isRequired,
+  user: ImmutablePropTypes.map,
 };
 
 export default EntryEditor;

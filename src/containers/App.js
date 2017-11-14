@@ -201,7 +201,7 @@ class App extends React.Component {
               <Switch>
                 <Route exact path='/' component={DashboardPage} />
                 <Route exact path="/collections/:name" component={CollectionPage} />
-                <Route path="/collections/:name/new" render={(props) => (<EntryPage {...props} newRecord />)} />
+                <Route path="/collections/:name/new" render={(props) => (<EntryPage {...props} user={user} newRecord />)} />
                 <Route path="/collections/:name/entries/:slug" component={EntryPage} />
                 <Route path="/search/:searchTerm" component={SearchPage} />
                 <Route component={NotFoundPage} />
