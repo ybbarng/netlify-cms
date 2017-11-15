@@ -4,6 +4,7 @@ import { Map, fromJS } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { resolveWidget } from '../Widgets';
 import ControlHOC from '../Widgets/ControlHOC';
+import { sanitizeSlug } from "../../lib/urlHelper";
 
 function isHidden(field) {
   return field.get('widget') === 'hidden';
@@ -42,6 +43,14 @@ export default class ControlPane extends Component {
     const errors = fieldsErrors.get(fieldName);
     const labelClass = errors ? 'nc-controlPane-label nc-controlPane-labelWithError' : 'nc-controlPane-label';
     if (entry.size === 0 || entry.get('partial') === true) return null;
+    function onChangeField(fieldName, newValue, newMetadata) {
+      onChange(fieldName, newValue, newMetadata);
+      if (fieldName === 'title') {
+        const slug = newValue.toLocaleLowerCase()
+        .replace(/[.\s]/g, '-');
+        onChange('path', `/posts/${sanitizeSlug(newValue)}`, newMetadata);
+      }
+    }
     return (
       <div className="nc-controlPane-control">
         <label className={labelClass} htmlFor={fieldName}>{field.get('label')}</label>
@@ -60,7 +69,7 @@ export default class ControlPane extends Component {
           value={value}
           mediaPaths={mediaPaths}
           metadata={metadata}
-          onChange={(newValue, newMetadata) => onChange(fieldName, newValue, newMetadata)}
+          onChange={(newValue, newMetadata) => onChangeField(fieldName, newValue, newMetadata)}
           onValidate={this.props.onValidate.bind(this, fieldName)}
           onOpenMediaLibrary={onOpenMediaLibrary}
           onAddAsset={onAddAsset}
