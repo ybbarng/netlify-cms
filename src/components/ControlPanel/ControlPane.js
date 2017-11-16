@@ -39,20 +39,21 @@ export default class ControlPane extends Component {
     } = this.props;
     const widget = resolveWidget(field.get('widget'));
     const fieldName = field.get('name');
-    let value = entry.getIn(['data', fieldName]);
-    if (autoFields.has(fieldName) && !value) {
-      value = autoFields.get(fieldName);
+    const value = entry.getIn(['data', fieldName]);
+    if (autoFields && autoFields.has(fieldName) && !value) {
+      onChange(fieldName, autoFields.get(fieldName));
     }
     const metadata = fieldsMetaData.get(fieldName);
     const errors = fieldsErrors.get(fieldName);
     const labelClass = errors ? 'nc-controlPane-label nc-controlPane-labelWithError' : 'nc-controlPane-label';
     if (entry.size === 0 || entry.get('partial') === true) return null;
-    function onChangeField(fieldName, newValue, newMetadata) {
-      onChange(fieldName, newValue, newMetadata);
+
+    function onChangeField(changeFieldName, newValue, newMetadata) {
+      onChange(changeFieldName, newValue, newMetadata);
       if (fieldName === 'title') {
         const slug = newValue.toLocaleLowerCase()
         .replace(/[.\s]/g, '-');
-        onChange('path', `/posts/${sanitizeSlug(newValue)}`, newMetadata);
+        onChange('path', `/posts/${ sanitizeSlug(slug) }`, newMetadata);
       }
     }
     return (
