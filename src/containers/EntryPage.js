@@ -48,6 +48,8 @@ class EntryPage extends React.Component {
     fields: ImmutablePropTypes.list.isRequired,
     slug: PropTypes.string,
     newEntry: PropTypes.bool.isRequired,
+    user: ImmutablePropTypes.map,
+    accounts: ImmutablePropTypes.list.isRequired,
   };
 
   componentDidMount() {
@@ -151,7 +153,11 @@ class EntryPage extends React.Component {
       addAsset,
       removeAsset,
       closeEntry,
+      user,
+      accounts,
     } = this.props;
+
+    const autoFields = user ? accounts.filter(account => account.get('email') === user.get('email')).get(0).get('auto_fields') : null;
 
     if (entry && entry.get('error')) {
       return <div><h3>{ entry.get('error') }</h3></div>;
@@ -180,13 +186,14 @@ class EntryPage extends React.Component {
         showDelete={this.props.showDelete}
         enableSave={entryDraft.get('hasChanged')}
         onCancelEdit={this.handleCloseEntry}
+        autoFields={autoFields}
       />
     );
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  const { collections, entryDraft, mediaLibrary } = state;
+  const { collections, config, entryDraft, mediaLibrary } = state;
   const slug = ownProps.match.params.slug;
   const collection = collections.get(ownProps.match.params.name);
   const newEntry = ownProps.newRecord === true;
@@ -194,6 +201,7 @@ function mapStateToProps(state, ownProps) {
   const entry = newEntry ? null : selectEntry(state, collection.get('name'), slug);
   const boundGetAsset = getAsset.bind(null, state);
   const mediaPaths = mediaLibrary.get('controlMedia');
+  const accounts = config.get('accounts');
   return {
     collection,
     collections,
@@ -204,6 +212,7 @@ function mapStateToProps(state, ownProps) {
     fields,
     slug,
     entry,
+    accounts,
   };
 }
 

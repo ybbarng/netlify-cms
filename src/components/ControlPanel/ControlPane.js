@@ -34,11 +34,15 @@ export default class ControlPane extends Component {
       onChange,
       onOpenMediaLibrary,
       onAddAsset,
-      onRemoveAsset
+      onRemoveAsset,
+      autoFields,
     } = this.props;
     const widget = resolveWidget(field.get('widget'));
     const fieldName = field.get('name');
-    const value = entry.getIn(['data', fieldName]);
+    let value = entry.getIn(['data', fieldName]);
+    if (autoFields.has(fieldName) && !value) {
+      value = autoFields.get(fieldName);
+    }
     const metadata = fieldsMetaData.get(fieldName);
     const errors = fieldsErrors.get(fieldName);
     const labelClass = errors ? 'nc-controlPane-label nc-controlPane-labelWithError' : 'nc-controlPane-label';
@@ -115,4 +119,5 @@ ControlPane.propTypes = {
   onChange: PropTypes.func.isRequired,
   onValidate: PropTypes.func.isRequired,
   onRemoveAsset: PropTypes.func.isRequired,
+  autoFields: ImmutablePropTypes.map,
 };
