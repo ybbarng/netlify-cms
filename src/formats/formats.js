@@ -3,12 +3,20 @@ import tomlFormatter from './toml';
 import jsonFormatter from './json';
 import FrontmatterFormatter from './frontmatter';
 
+export const supportedFormats = [
+  'yml',
+  'yaml',
+  'toml',
+  'json',
+  'frontmatter',
+];
+
 export const formatToExtension = format => ({
-  markdown: 'md',
+  yml: 'yml',
   yaml: 'yml',
   toml: 'toml',
   json: 'json',
-  html: 'html',
+  frontmatter: 'md',
 }[format]);
 
 export function formatByExtension(extension) {
@@ -20,7 +28,7 @@ export function formatByExtension(extension) {
     md: FrontmatterFormatter,
     markdown: FrontmatterFormatter,
     html: FrontmatterFormatter,
-  }[extension] || FrontmatterFormatter;
+  }[extension];
 }
 
 function formatByName(name) {
@@ -30,13 +38,30 @@ function formatByName(name) {
     toml: tomlFormatter,
     json: jsonFormatter,
     frontmatter: FrontmatterFormatter,
-  }[name] || FrontmatterFormatter;
+  }[name];
 }
 
 export function resolveFormat(collectionOrEntity, entry) {
-  const path = entry && entry.path;
-  if (path) {
-    return formatByExtension(path.split('.').pop());
+  // If the format is specified in the collection, use that format.
+  const format = collectionOrEntity.get('format');
+  if (format) {
+    return formatByName(format);
   }
-  return formatByName(collectionOrEntity.get('format'));
+
+  // If a file already exists, infer the format from its file extension.
+  const filePath = entry && entry.path;
+  if (filePath) {
+    const fileExtension = filePath.split('.').pop();
+    return formatByExtension(fileExtension);
+  }
+
+  // If creating a new file, and an `extension` is specified in the
+  //   collection config, infer the format from that extension.
+  const extension = collectionOrEntity.get('extension');
+  if (extension) {
+    return formatByExtension(extension);
+  }
+
+  // If no format is specified and it cannot be inferred, return the default.
+  return formatByName('frontmatter');
 }
