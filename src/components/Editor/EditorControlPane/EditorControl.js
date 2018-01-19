@@ -30,7 +30,6 @@ export default class EditorControl extends React.Component {
     const widget = resolveWidget(widgetName);
     const fieldName = field.get('name');
     const metadata = fieldsMetaData && fieldsMetaData.get(fieldName);
-    console.log(autoFields);
     if (autoFields && autoFields.has(fieldName) && !value) {
       onChange(fieldName, autoFields.get(fieldName));
     }
