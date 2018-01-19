@@ -1,12 +1,13 @@
 import { Text, Inline } from 'slate';
+import isHotkey from 'is-hotkey';
 import SlateSoftBreak from 'slate-soft-break';
 import EditList from 'slate-edit-list';
 import EditTable from 'slate-edit-table';
 
 const SoftBreak = (options = {}) => ({
-  onKeyDown(e, data, change) {
-    if (data.key != 'enter') return;
-    if (options.shift && e.shiftKey == false) return;
+  onKeyDown(event, change) {
+    if (options.shift && !isHotkey('shift+enter', event)) return;
+    if (!options.shift && !isHotkey('enter', event)) return;
 
     const { onlyIn, ignoreIn, defaultBlock = 'paragraph' } = options;
     const { type, text } = change.value.startBlock;
@@ -38,9 +39,9 @@ export const SoftBreakConfigured = SoftBreak(SoftBreakOpts);
 export const ParagraphSoftBreakConfigured = SoftBreak({ onlyIn: ['paragraph'], shift: true });
 
 const BreakToDefaultBlock = ({ onlyIn = [], defaultBlock = 'paragraph' }) => ({
-  onKeyDown(e, data, change) {
+  onKeyDown(event, change) {
     const { value } = change;
-    if (data.key != 'enter' || e.shiftKey == true || value.isExpanded) return;
+    if (!isHotkey('enter', event) || value.isExpanded) return;
     if (onlyIn.includes(value.startBlock.type)) {
       return change.insertBlock(defaultBlock);
     }

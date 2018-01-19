@@ -1,4 +1,4 @@
-import LocalForage from "localforage";
+import LocalForage from "Lib/LocalForage";
 import { Base64 } from "js-base64";
 import { uniq, initial, last, get, find } from "lodash";
 import { filterPromises, resolvePromiseProperties } from "Lib/promiseHelper";
@@ -638,7 +638,7 @@ export default class API {
     })
     .catch((error) => {
       if (error instanceof APIError && error.status === 405) {
-        this.forceMergePR(pullrequest, objects);
+        return this.forceMergePR(pullrequest, objects);
       } else {
         throw error;
       }

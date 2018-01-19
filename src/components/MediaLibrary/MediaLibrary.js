@@ -21,8 +21,8 @@ import { Icon } from 'UI';
  * Extensions used to determine which files to show when the media library is
  * accessed from an image insertion field.
  */
-const IMAGE_EXTENSIONS_VIEWABLE = [ 'jpg', 'jpeg', 'webp', 'gif', 'png', 'bmp', 'tiff' ];
-const IMAGE_EXTENSIONS = [ ...IMAGE_EXTENSIONS_VIEWABLE, 'svg' ];
+const IMAGE_EXTENSIONS_VIEWABLE = [ 'jpg', 'jpeg', 'webp', 'gif', 'png', 'bmp', 'tiff', 'svg' ];
+const IMAGE_EXTENSIONS = [ ...IMAGE_EXTENSIONS_VIEWABLE ];
 
 class MediaLibrary extends React.Component {
 
@@ -112,21 +112,21 @@ class MediaLibrary extends React.Component {
   handlePersist = async event => {
     /**
      * Stop the browser from automatically handling the file input click, and
-     * get the file for upload.
+     * get the file for upload, and retain the synthetic event for access after
+     * the asynchronous persist operation.
      */
     event.stopPropagation();
     event.preventDefault();
+    event.persist();
     const { persistMedia, privateUpload } = this.props;
     const { files: fileList } = event.dataTransfer || event.target;
     const files = [...fileList];
     const file = files[0];
 
-    /**
-     * Upload the selected file, then refresh the media library. This should be
-     * improved in the future, but isn't currently resulting in noticeable
-     * performance/load time issues.
-     */
     await persistMedia(file, { privateUpload });
+
+    event.target.value = null;
+
     this.scrollToTop();
   };
 

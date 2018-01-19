@@ -4,7 +4,64 @@
     Changes that have landed in master but are not yet released.
     Click to see more.
   </summary>
+
+  * Fix markdown widget re-rendering after load ([@erquhart](https://github.com/erquhart) in [#955](https://github.com/netlify/netlify-cms/pull/955))
+  * Fix image form not displaying when added as first item in markdown widget ([@Dammmien](https://github.com/Dammmien) in [#926](https://github.com/netlify/netlify-cms/pull/926))
+  * Add collapse all/expand all functionality to List widget ([@drlogout](https://github.com/drlogout) in [#912](https://github.com/netlify/netlify-cms/pull/912))
+  * Add expand/collapse functionality to object widget ([@drlogout](https://github.com/drlogout) in [#927](https://github.com/netlify/netlify-cms/pull/927))
 </details>
+
+## 1.0.3 (December 19, 2017)
+
+* Fix select widgets with object type options ([@tech4him1](https://github.com/tech4him1) in [#920](https://github.com/netlify/netlify-cms/pull/920))
+* Warn when uploading asset with same name as existing asset ([@Dammmien](https://github.com/Dammmien) in [#853](https://github.com/netlify/netlify-cms/pull/853))
+* Fix Slate plugins broken during 0.30 migration ([@Dammmien](https://github.com/Dammmien) in [#856](https://github.com/netlify/netlify-cms/pull/856))
+* Fix infinite scrolling for collections with integrations ([@erquhart](https://github.com/erquhart) in [#940](https://github.com/netlify/netlify-cms/pull/940))
+
+## 1.0.2 (December 7, 2017)
+
+* Fix position of editor view controls ([@biilmann](https://github.com/biilmann) in [#886](https://github.com/netlify/netlify-cms/pull/886))
+* Update docs intro to direct to new content ([@verythorough](https://github.com/verythorough) in [#891](https://github.com/netlify/netlify-cms/pull/891))
+
+
+## 1.0.1 (December 7, 2017)
+
+* Add configuration options doc ([@verythorough](https://github.com/verythorough) in [#885](https://github.com/netlify/netlify-cms/pull/885))
+* Add new docs website landing page ([@ziburski](https://github.com/ziburski) in [#880](https://github.com/netlify/netlify-cms/pull/880))
+* Rework Test Drive and Quick Start docs ([@verythorough](https://github.com/verythorough) in [#888](https://github.com/netlify/netlify-cms/pull/888))
+
+## 1.0.0 (December 7, 2017)
+
+The first major release of Netlify CMS!! Here are the big features:
+
+### All New UI 💫
+The CMS UI has been completely redesigned from the ground up!
+
+* All new visuals and reprised UX throughout
+* List view/grid view option for collections
+* Deletion now works for editorial workflow
+* Control publishing and editorial workflow status from the entry editor
+* Descriptions can now be added for each collection
+
+## All New Docs 💥
+The docs at netlifycms.org have been rewritten and vastly improved!
+
+* Full references with code samples for every configuration option, collection type, and widget
+* Easier docs contributions with the website built directly in the repo
+* Updated intro docs with a new Gatsby starter template in addition to the Hugo one
+
+## Changes
+
+* Fix backspace not removing empty block in markdown editor ([@Dammmien](https://github.com/Dammmien) in [#854](https://github.com/netlify/netlify-cms/pull/854))
+* Add select widget documentation ([@ackushiw](https://github.com/ackushiw) in [#806](https://github.com/netlify/netlify-cms/pull/806))
+* Migrate netlifycms.org source into this repo ([@verythorough](https://github.com/verythorough) in [#860](https://github.com/netlify/netlify-cms/pull/860))
+* Fix Slate mark rendering ([@erquhart](https://github.com/erquhart) in [#858](https://github.com/netlify/netlify-cms/pull/858))
+* Do not infer file format if format specified in config ([@tech4him1](https://github.com/tech4him1) in [#795](https://github.com/netlify/netlify-cms/pull/795))
+* Infer format from extension for new entries ([@tech4him1](https://github.com/tech4him1) in [#796](https://github.com/netlify/netlify-cms/pull/796))
+* Throw on unsupported format ([@tech4him1](https://github.com/tech4him1) in [#831](https://github.com/netlify/netlify-cms/pull/831))
+* Update widget docs ([@verythorough](https://github.com/verythorough) in [#876](https://github.com/netlify/netlify-cms/pull/876))
+* Implement new UI, restructure/refactor project ([@erquhart](https://github.com/erquhart) and [@neutyp](https://github.com/neutyp) in [#785](https://github.com/netlify/netlify-cms/pull/785))
+
 
 ## 0.7.6 (November 27, 2017)
 
